@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Circular Button</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .circle-btn {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .circle-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .circle-btn i {
+            font-size: 24px;
+            color: white;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="circle-btn">
+        <i class="fas fa-plus"></i>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Circular 2024</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Previous styles remain unchanged */
+        /* Add these new styles */
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #4ecdc4, #45b7d1);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .subject-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #1e3c72;
+        }
+
+        .academic-calendar {
+            margin: 3rem 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 2rem;
+            color: #333;
+        }
+
+        .calendar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .calendar-table th,
+        .calendar-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .calendar-table th {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ffd93d);
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        .topic-list {
+            list-style: none;
+            columns: 2;
+        }
+
+        .topic-list li {
+            padding: 0.3rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .topic-list li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: #ff6b6b;
+        }
+
+        @media (max-width: 768px) {
+            .topic-list {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Previous content remains unchanged -->
+
+        <!-- Academic Calendar Section -->
+        <div class="academic-calendar">
+            <h2><i class="fas fa-calendar-alt"></i> Academic Calendar 2025</h2>
+            <table class="calendar-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Event</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jan 15 - Feb 28</td>
+                        <td>Admissions</td>
+                        <td> Student registration process</td>
+                    </tr>
+                    <tr>
+                        <td>Mar 1 - 10</td>
+                        <td>Orientation</td>
+                        <td>Student orientation programs</td>
+                    </tr>
+                    <tr>
+                        <td>Mar 15</td>
+                        <td>Classes Begin</td>
+                        <td>Commencement of all courses</td>
+                    </tr>
+                    <tr>
+                        <td>Apr 1 - 15</td>
+                        <td>Mid-Term Exams</td>
+                        <td>First assessment exams</td>
+                    </tr>
+                    <tr>
+                        <td>Jun 1 - 15</td>
+                        <td>Final Exams</td>
+                        <td>End of semester exams</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Subject Details Section -->
+        <div class="subject-grid">
+            <div class="subject-card">
+                <i class="fab fa-java subject-icon"></i>
+                <h3>Java Programming</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="80%"></div>
+                </div>
+                <p><strong>Instructor:</strong> Prof.Revanth</p>
+                <p><strong>Schedule:</strong> Mon & Wed, 10:00 AM</p>
+                <p><strong>Duration:</strong> 12 Weeks</p>
+                <h4>Course Topics:</h4>
+                <ul class="topic-list">
+                    <li>OOP Concepts</li>
+                    <li>Java Collections</li>
+                    <li>Multithreading</li>
+                    <li>JDBC</li>
+                    <li>Spring Framework</li>
+                    <li>Project Development</li>
+                </ul>
+            </div>
+
+            <div class="subject-card">
+                <i class="fab fa-python subject-icon"></i>
+                <h3>Python Development</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="75%"></div>
+                </div>
+                <p><strong>Instructor:</strong> Dr. Harini</p>
+                <p><strong>Schedule:</strong> Tue & Thu, 2:00 PM</p>
+                <p><strong>Duration:</strong> 10 Weeks</p>
+                <h4>Course Topics:</h4>
+                <ul class="topic-list">
+                    <li>Python Basics</li>
+                    <li>Data Analysis</li>
+                    <li>Django Framework</li>
+                    <li>Machine Learning</li>
+                    <li>APIs Development</li>
+                    <li>Automation Scripts</li>
+                </ul>
+            </div>
+
+            <div class="subject-card">
+                <i class="fab fa-html5 subject-icon"></i>
+                <h3>Web Development</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" data-width="90%"></div>
+                </div>
+                <p><strong>Instructor:</strong> Ms. Sravani</p>
+                <p><strong>Schedule:</strong> Fri, 9:00 AM</p>
+                <p><strong>Duration:</strong> 8 Weeks</p>
+                <h4>Course Topics:</h4>
+                <ul class="topic-list">
+                    <li>HTML5 & CSS3</li>
+                    <li>JavaScript ES6+</li>
+                    <li>Responsive Design</li>
+                    <li>React Framework</li>
+                    <li>REST APIs</li>
+                    <li>Web Security</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+<!-- Add these new subject cards to the existing subject-grid div -->
+
+<div class="subject-grid">
+    <!-- Existing courses remain here -->
+
+    <!-- C Programming -->
+    <div class="subject-card">
+        <i class="fas fa-code subject-icon"></i>
+        <h3>C Programming</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="85%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Mr. Ravi Teja</p>
+        <p><strong>Schedule:</strong> Mon & Fri, 9:30 AM</p>
+        <p><strong>Duration:</strong> 8 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>Programming Fundamentals</li>
+            <li>Pointers & Memory Management</li>
+            <li>Data Structures in C</li>
+            <li>File Handling</li>
+            <li>Algorithm Design</li>
+            <li>Project Implementation</li>
+        </ul>
+    </div>
+
+    <!-- C++ Programming -->
+    <div class="subject-card">
+        <i class="fas fa-laptop-code subject-icon"></i>
+        <h3>C++ Programming</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="78%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Dr. Anil Kumar</p>
+        <p><strong>Schedule:</strong> Tue & Thu, 11:00 AM</p>
+        <p><strong>Duration:</strong> 10 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>Object-Oriented Programming</li>
+            <li>STL Containers</li>
+            <li>Templates</li>
+            <li>Exception Handling</li>
+            <li>Multithreading</li>
+            <li>Game Development Basics</li>
+        </ul>
+    </div>
+
+    <!-- C# Development -->
+    <div class="subject-card">
+        <i class="fab fa-microsoft subject-icon"></i>
+        <h3>C# Development</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="70%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Ms. Priya Sharma</p>
+        <p><strong>Schedule:</strong> Wed, 3:00 PM</p>
+        <p><strong>Duration:</strong> 9 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>.NET Framework</li>
+            <li>ASP.NET Core</li>
+            <li>Entity Framework</li>
+            <li>Windows Forms</li>
+            <li>LINQ Queries</li>
+            <li>Xamarin Mobile Development</li>
+        </ul>
+    </div>
+
+    <!-- DBMS -->
+    <div class="subject-card">
+        <i class="fas fa-database subject-icon"></i>
+        <h3>Database Management</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="88%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Dr. Suresh Reddy</p>
+        <p><strong>Schedule:</strong> Mon & Wed, 2:30 PM</p>
+        <p><strong>Duration:</strong> 7 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>Relational Algebra</li>
+            <li>SQL Queries</li>
+            <li>Normalization</li>
+            <li>Transaction Management</li>
+            <li>NoSQL Databases</li>
+            <li>Database Security</li>
+        </ul>
+    </div>
+
+    <!-- R Programming -->
+    <div class="subject-card">
+        <i class="fab fa-r-project subject-icon"></i>
+        <h3>R Programming</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="82%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Dr. Nisha Patel</p>
+        <p><strong>Schedule:</strong> Fri, 4:00 PM</p>
+        <p><strong>Duration:</strong> 6 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>Statistical Computing</li>
+            <li>Data Visualization</li>
+            <li>Machine Learning in R</li>
+            <li>R Markdown</li>
+            <li>Shiny Web Apps</li>
+            <li>Bioinformatics Basics</li>
+        </ul>
+    </div>
+
+    <!-- Additional Courses -->
+    <div class="subject-card">
+        <i class="fas fa-sitemap subject-icon"></i>
+        <h3>Data Structures</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="95%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Prof. Rajesh Kumar</p>
+        <p><strong>Schedule:</strong> Tue & Thu, 9:00 AM</p>
+        <p><strong>Duration:</strong> 12 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>Linked Lists</li>
+            <li>Trees & Graphs</li>
+            <li>Sorting Algorithms</li>
+            <li>Hashing Techniques</li>
+            <li>Dynamic Programming</li>
+            <li>Algorithm Analysis</li>
+        </ul>
+    </div>
+
+    <div class="subject-card">
+        <i class="fas fa-cloud subject-icon"></i>
+        <h3>Cloud Computing</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" data-width="68%"></div>
+        </div>
+        <p><strong>Instructor:</strong> Mr. Amit Joshi</p>
+        <p><strong>Schedule:</strong> Sat, 10:00 AM</p>
+        <p><strong>Duration:</strong> 8 Weeks</p>
+        <h4>Course Topics:</h4>
+        <ul class="topic-list">
+            <li>AWS Fundamentals</li>
+            <li>Azure Services</li>
+            <li>Cloud Security</li>
+            <li>Serverless Architecture</li>
+            <li>Containerization</li>
+            <li>Cloud Deployment</li>
+        </ul>
+    </div>
+</div>
+
+    <script>
+        // Previous JavaScript remains unchanged
+        // Add this new JavaScript for progress bars
+
+        // Animate progress bars on scroll
+        const progressObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const progressFill = entry.target.querySelector('.progress-fill');
+                    const width = progressFill.dataset.width;
+                    progressFill.style.width = width;
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.subject-card').forEach(card => {
+            progressObserver.observe(card);
+        });
+
+        // Add hover effect to table rows
+        document.querySelectorAll('.calendar-table tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.backgroundColor = 'rgba(78, 205, 196, 0.1)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.backgroundColor = '';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Quiz Challenge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-image: url('https://edsurge.imgix.net/uploads/post/image/12610/edsurge-1568760440.jpg?auto=compress%2Cformat&w=2000&h=810&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .quiz-box {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            background-color: rgba(224, 247, 233, 0.9);
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .streak-box {
+            font-size: 24px;
+            margin: 30px 0;
+            padding: 15px;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        button {
+            margin: 15px 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            margin: 0 10px;
+            border-radius: 5px;
+        }
+
+        #options button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            text-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎓 Daily Quiz Challenge 🎓</h1>
+
+    <div>
+        <label for="subject">Choose a Subject:</label>
+        <select id="subject">
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C Programming</option>
+            <option value="dbms">DBMS</option>
+        </select>
+        <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="quiz-box" id="quizBox" style="display: none;">
+        <h2 id="questionText">Question appears here</h2>
+        <div id="options"></div>
+        <div>
+            <button id="prevBtn" onclick="prevQuestion()" style="display: none;">⬅ Previous</button>
+            <button onclick="nextQuestion()">Next ➡</button>
+            <button onclick="submitQuiz()" style="display: none;" id="submitBtn">Submit Quiz</button>
+        </div>
+    </div>
+
+    <div class="streak-box">
+        🔥 Streak: <span id="streakCount">0</span> days | 🎯 Score: <span id="scoreCount">0</span>
+    </div>
+
+    <script>
+        let quizzes = {
+            python: [
+                {
+                    question: "Which keyword is used to define a function in Python?",
+                    options: ["def", "function", "define", "func"],
+                    answer: "def"
+                },
+                {
+                    question: "What is the output of 'print(3 * '7')' in Python?",
+                    options: ["21", "777", "Error", "37"],
+                    answer: "777"
+                },
+                {
+                    question: "Which of these is NOT a valid Python data type?",
+                    options: ["tuple", "list", "array", "dictionary"],
+                    answer: "array"
+                },
+                {
+                    question: "What does PEP stand for in Python?",
+                    options: ["Python Enhancement Proposal", "Python Execution Process", 
+                             "Programmer's Enhancement Package", "Python Environment Protocol"],
+                    answer: "Python Enhancement Proposal"
+                },
+                {
+                    question: "Which operator is used for exponentiation in Python?",
+                    options: ["^", "**", "^^", "pow"],
+                    answer: "**"
+                },
+                {
+                    question: "What is the purpose of __init__ method in Python classes?",
+                    options: ["To initialize class variables", "To create constructors", 
+                            "To destroy objects", "Both A and B"],
+                    answer: "Both A and B"
+                },
+                {
+                    question: "Which module is used for regular expressions in Python?",
+                    options: ["regex", "re", "pyre", "pattern"],
+                    answer: "re"
+                },
+                {
+                    question: "What does the 'yield' keyword do in Python?",
+                    options: ["Returns a value from a function", "Pauses function execution and returns value",
+                             "Stops function execution", "Yields CPU time to other threads"],
+                    answer: "Pauses function execution and returns value"
+                },
+                {
+                    question: "Which of these is immutable in Python?",
+                    options: ["list", "dictionary", "set", "string"],
+                    answer: "string"
+                },
+                {
+                    question: "What is the output of 'print(1 + 2 * 3 ** 2)' in Python?",
+                    options: ["19", "27", "9", "81"],
+                    answer: "19"
+                }
+            ],
+            java: [
+                {
+                    question: "Which keyword is used to define a constant in Java?",
+                    options: ["const", "final", "static", "constant"],
+                    answer: "final"
+                },
+                {
+                    question: "What is the parent class of all Java classes?",
+                    options: ["Object", "Main", "Class", "Super"],
+                    answer: "Object"
+                },
+                {
+                    question: "Which collection implements FIFO principle in Java?",
+                    options: ["List", "Set", "Queue", "Map"],
+                    answer: "Queue"
+                },
+                {
+                    question: "What is the default value of a boolean variable in Java?",
+                    options: ["true", "false", "null", "0"],
+                    answer: "false"
+                },
+                {
+                    question: "Which keyword is used for exception handling in Java?",
+                    options: ["try", "exception", "error", "catch"],
+                    answer: "try"
+                },
+                {
+                    question: "What is the size of 'double' data type in Java?",
+                    options: ["4 bytes", "8 bytes", "16 bytes", "32 bytes"],
+                    answer: "8 bytes"
+                },
+                {
+                    question: "Which method must be implemented by all threads in Java?",
+                    options: ["start()", "run()", "execute()", "main()"],
+                    answer: "run()"
+                },
+                {
+                    question: "What is Java's garbage collection?",
+                    options: ["Memory allocation technique", "Automatic memory management",
+                             "Manual memory management", "Data structure"],
+                    answer: "Automatic memory management"
+                },
+                {
+                    question: "Which interface implements the Comparable in Java?",
+                    options: ["Comparator", "Serializable", "Runnable", "Cloneable"],
+                    answer: "Comparator"
+                },
+                {
+                    question: "What is the default capacity of ArrayList in Java?",
+                    options: ["0", "5", "10", "16"],
+                    answer: "10"
+                }
+            ],
+            c: [
+                {
+                    question: "What is the correct syntax for a function in C?",
+                    options: ["functionName()", "void functionName()", 
+                             "def functionName():", "functionName[]"],
+                    answer: "void functionName()"
+                },
+                {
+                    question: "Which operator is used to access structure members?",
+                    options: [".", "->", "::", "both . and ->"],
+                    answer: "both . and ->"
+                },
+                {
+                    question: "What does the '++' operator do?",
+                    options: ["Adds 2", "Adds 1", "Multiplies by 2", "Squares the value"],
+                    answer: "Adds 1"
+                },
+                {
+                    question: "Which header file is needed for printf()?",
+                    options: ["<stdio.h>", "<stdlib.h>", "<math.h>", "<io.h>"],
+                    answer: "<stdio.h>"
+                },
+                {
+                    question: "What is the size of int in 32-bit C compiler?",
+                    options: ["2 bytes", "4 bytes", "8 bytes", "Depends on system"],
+                    answer: "4 bytes"
+                },
+                {
+                    question: "Which is NOT a valid storage class specifier?",
+                    options: ["auto", "static", "extern", "public"],
+                    answer: "public"
+                },
+                {
+                    question: "What is the escape sequence for newline?",
+                    options: ["\\n", "\\t", "\\a", "\\b"],
+                    answer: "\\n"
+                },
+                {
+                    question: "Which function allocates memory dynamically?",
+                    options: ["malloc()", "calloc()", "realloc()", "All of these"],
+                    answer: "All of these"
+                },
+                {
+                    question: "What is the format specifier for double?",
+                    options: ["%d", "%f", "%lf", "%dl"],
+                    answer: "%lf"
+                },
+                {
+                    question: "Which operator has highest precedence?",
+                    options: ["()", "*", "++", "=="],
+                    answer: "()"
+                }
+            ],
+            dbms: [
+                {
+                    question: "What is the full form of ACID?",
+                    options: ["Atomicity, Consistency, Isolation, Durability",
+                             "Association, Consistency, Integration, Data",
+                             "Atomic, Consistent, Isolated, Durable",
+                             "None of these"],
+                    answer: "Atomicity, Consistency, Isolation, Durability"
+                },
+                {
+                    question: "Which normal form eliminates transitive dependency?",
+                    options: ["1NF", "2NF", "3NF", "BCNF"],
+                    answer: "3NF"
+                },
+                {
+                    question: "What is a candidate key?",
+                    options: ["Primary key", "Unique identifier", 
+                             "Super key with no redundant attributes", "Foreign key"],
+                    answer: "Super key with no redundant attributes"
+                },
+                {
+                    question: "Which join returns all records when there's a match in either table?",
+                    options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"],
+                    answer: "FULL OUTER JOIN"
+                },
+                {
+                    question: "What is the purpose of GROUP BY clause?",
+                    options: ["Filter rows", "Group rows by column values",
+                             "Order results", "Join tables"],
+                    answer: "Group rows by column values"
+                },
+                {
+                    question: "Which SQL command is used to modify data?",
+                    options: ["ALTER", "UPDATE", "MODIFY", "CHANGE"],
+                    answer: "UPDATE"
+                },
+                {
+                    question: "What does SQL stand for?",
+                    options: ["Structured Query Language", "Simple Query Language",
+                             "Standard Query Logic", "System Query Language"],
+                    answer: "Structured Query Language"
+                },
+                {
+                    question: "Which constraint ensures unique values?",
+                    options: ["PRIMARY KEY", "UNIQUE", "CHECK", "Both A and B"],
+                    answer: "Both A and B"
+                },
+                {
+                    question: "What is a view in DBMS?",
+                    options: ["Physical table", "Virtual table", 
+                             "Temporary table", "Index"],
+                    answer: "Virtual table"
+                },
+                {
+                    question: "Which operator is used for pattern matching?",
+                    options: ["LIKE", "MATCH", "SIMILAR", "REGEX"],
+                    answer: "LIKE"
+                }
+            ]
+        };
+
+        let currentSubject = "";
+        let currentIndex = 0;
+        let score = 0;
+        let streak = 0;
+
+        function startQuiz() {
+            currentSubject = document.getElementById("subject").value;
+            currentIndex = 0;
+            score = 0;
+            document.getElementById("quizBox").style.display = "block";
+            document.getElementById("prevBtn").style.display = "none";
+            document.getElementById("submitBtn").style.display = "none";
+            document.getElementById("scoreCount").textContent = score;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            let quiz = quizzes[currentSubject];
+            if (currentIndex < quiz.length) {
+                document.getElementById("questionText").textContent = 
+                    `Q${currentIndex + 1}: ${quiz[currentIndex].question}`;
+                let optionsDiv = document.getElementById("options");
+                optionsDiv.innerHTML = "";
+                
+                quiz[currentIndex].options.forEach(option => {
+                    let btn = document.createElement("button");
+                    btn.textContent = option;
+                    btn.onclick = () => checkAnswer(option);
+                    optionsDiv.appendChild(btn);
+                });
+            }
+            
+            document.getElementById("submitBtn").style.display = 
+                currentIndex === quiz.length - 1 ? "inline-block" : "none";
+            document.getElementById("prevBtn").style.display = 
+                currentIndex > 0 ? "inline-block" : "none";
+        }
+
+        function checkAnswer(selected) {
+            let correct = quizzes[currentSubject][currentIndex].answer;
+            if (selected === correct) {
+                score += 10;
+                document.getElementById("scoreCount").textContent = score;
+                alert("✅ Correct! +10 points");
+            } else {
+                alert(`❌ Wrong! Correct answer: ${correct}`);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizzes[currentSubject].length - 1) {
+                currentIndex++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            streak++;
+            document.getElementById("streakCount").textContent = streak;
+            alert(`🎉 Quiz Completed! Final Score: ${score}/${quizzes[currentSubject].length * 10}`);
+            document.getElementById("quizBox").style.display = "none";
+        }
+    </script>
+</body>
+</html>

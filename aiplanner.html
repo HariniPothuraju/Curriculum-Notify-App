@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Study Planner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://schooltheatre.org/wp-content/uploads/2021/12/pexels-olia-danilevich-5088017-1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+        }
+        h2 {
+            color: #333;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .study-plan {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #444;
+            text-align: left;
+            padding: 10px;
+            border-radius: 5px;
+            background: #e9f7ef;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI-Powered Study Planner 📚</h1>
+        
+        <div class="box">
+            <h2>Enter Your Study Plan Details</h2>
+            <input type="text" id="subject" placeholder="Enter subject name">
+            <input type="date" id="deadline">
+            <input type="number" id="hoursAvailable" placeholder="Hours available per day">
+            <button onclick="generatePlan()">Generate Study Plan</button>
+        </div>
+
+        <div class="box study-plan" id="studyPlanBox">
+            <h2>Your Study Plan</h2>
+            <p id="studyPlanText"></p>
+        </div>
+    </div>
+
+    <script>
+        function generatePlan() {
+            let subject = document.getElementById("subject").value;
+            let deadline = new Date(document.getElementById("deadline").value);
+            let hoursPerDay = parseInt(document.getElementById("hoursAvailable").value);
+
+            if (!subject || !deadline || !hoursPerDay || hoursPerDay <= 0) {
+                alert("Please fill all fields with valid values.");
+                return;
+            }
+
+            let today = new Date();
+            let daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+            if (daysLeft <= 0) {
+                alert("Deadline must be in the future!");
+                return;
+            }
+
+            let dailyPlan = `You need to study ${hoursPerDay} hours daily for ${daysLeft} days to complete ${subject} before the deadline. Stay consistent and focus on key topics!`;
+
+            document.getElementById("studyPlanText").innerText = dailyPlan;
+            document.getElementById("studyPlanBox").style.display = "block";
+        }
+    </script>
+</body>
+</html>

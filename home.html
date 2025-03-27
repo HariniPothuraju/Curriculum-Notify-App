@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Notify Tool</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #4f46e5;
+            --background: rgba(255, 255, 255, 0.8);
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: url(' https://img.freepik.com/free-vector/education-technology-futuristic-background-vector-gradient-blue-digital-remix_53876-114092.jpg?t=st=1742722771~exp=1742726371~hmac=209eeb4cdfc6b7e292c92882ef7f65ff440fd92c3171e7221eedc23c8ccf316b&w=1380')no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--background);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .form-card, .notifications-list {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--secondary);
+        }
+
+        .notification-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .curriculum-sheet {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .subject-link {
+            color: var(--secondary);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .topics {
+            display: none;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+
+        .footer {
+            background-color: #000000;
+            color: #ffffff;
+            padding: 2rem;
+            margin-top: 3rem;
+            text-align: center;
+            border-radius: 0 0 1rem 1rem;
+        }
+
+        .footer a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+.exam-countdown {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+.countdown-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.urgent {
+    border-left: 4px solid red !important;
+    color: red;
+}
+
+
+
+.flashing {
+    animation: flash 1s infinite alternate;
+}
+
+@keyframes flash {
+    from { background-color: white; }
+    to { background-color: red; color: white; }
+}
+
+    </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .dropdown-container {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Positioned on the left */
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .alert-box {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff5733;
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+
+<style>
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .link-box {
+            margin-top: 20px;
+        }
+        .link-box a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .notification {
+            background: #ff9800;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            background: #2196F3;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+    </style>
+    </head>
+<body>
+    <a href="diary1.html">
+        <img src="https://img.freepik.com/premium-vector/funny-diary-company-logo-template_292879-784.jpg?w=900" alt="Diary Logo" class="logo">
+    </a>
+
+<div class="dropdown-container">
+        <select onchange="navigateToPage(this)">
+            <option value="">-- Select a Page --</option>
+            <option value="file:///C:/Users/HP/Desktop/notify/planner.html">AI-Powered Study Planner</option>
+            <option value="file:///C:/Users/HP/Desktop/notify/Quize.html">Daily Quize</option>
+            <option value="file:///C:/Users/HP/Desktop/notify/blendedlearning.html">Code Tube</option>
+	<option value="file:///C:/Users/HP/Desktop/notify/circulam.html">Academic Calendar 2025</option>
+                        <option value="file:///C:/Users/HP/Desktop/notify/planner.html">Curriculum Notify Tool</option>
+	            <option value="file:///C:/Users/HP/Desktop/notify/type.html">Typing speed</option>
+	<option value="file:///C:/Users/HP/Desktop/notify/chatbox.html">Chatbox</option>
+
+<option value="file:///C:/Users/HP/Desktop/notify/Acedamic.html">Academic Circular 2025</option>
+<option value="file:///C:/Users/HP/Desktop/notify/elinment.html">Curriculum Alignment With Industry Trends</option>
+
+<option value="file:///C:/Users/HP/Desktop/hari.py/A1.html">AI Mental Health Chatbot</option>
+
+
+
+	 <option value="file:///C:/Users/HP/Desktop/notify/feedback.html">Feedback</option>
+
+
+
+
+        </select>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Curriculum Notifier</h1>
+            <p>Never miss important study schedules again!</p>
+        </div>
+
+        <div class="main-grid">
+            <div class="form-card">
+                <h2>➕ Add New Reminder</h2>
+                <form id="notificationForm">
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" placeholder="Enter subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <input type="text" id="message" placeholder="Enter message">
+                    </div>
+                    <div class="form-group">
+                        <label for="time">Schedule Time</label>
+                        <input type="time" id="time">
+                    </div>
+                    <button type="submit">Set Reminder</button>
+                </form>
+            </div>
+
+            <div class="notifications-list">
+                <h2>📅 Scheduled Reminders</h2>
+                <div id="notificationsContainer"></div>
+            </div>
+        </div>
+<div class="box">
+            <h2>Dynamic Fun Alerts 🎉</h2>
+            <p class="alert-box" id="alertMessage">Loading fun alert...</p>
+        </div>
+
+<div class="exam-countdown">
+    <h2>⏳ Exam & Assignment Countdown</h2>
+    <div id="countdownContainer"></div>
+    <form id="countdownForm">
+        <div class="form-group">
+            <label for="examName">Exam/Assignment</label>
+            <input type="text" id="examName" placeholder="Enter name">
+        </div>
+        <div class="form-group">
+            <label for="examDate">Date</label>
+            <input type="date" id="examDate">
+        </div>
+        <button type="submit">Add Countdown</button>
+    </form>
+</div>
+
+
+        <div class="curriculum-sheet">
+            <h2>📖 Academic Curriculum</h2>
+            
+
+<table>
+<tr>
+    <td><span class="subject-link" onclick="toggleTopics('optimization-topics')">Optimization Techniques</span></td>
+    <td>Dr.Srinu babu</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div id="optimization-topics" class="topics">
+            <p>✔ Introduction to Optimization</p>
+            <p>✔ Linear Programming (LPP) - Graphical & Simplex Method</p>
+            <p>✔ Duality in Linear Programming</p>
+            <p>✔ Transportation & Assignment Problems</p>
+            <p>✔ Dynamic Programming</p>
+            <p>✔ Non-Linear Programming</p>
+            <p>✔ Genetic Algorithms & Evolutionary Techniques</p>
+            <p>✔ Game Theory & Decision Analysis</p>
+        </div>
+    </td>
+</tr>
+    <tr>
+    <td><span class="subject-link" onclick="toggleTopics('java-topics')">Java Programming</span></td>
+    <td>Dr.Kalyani</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div id="java-topics" class="topics">
+            <p>✔ Introduction to Java</p>
+            <p>✔ Object-Oriented Programming (OOP)</p>
+            <p>✔ Exception Handling</p>
+            <p>✔ Multi-threading</p>
+            <p>✔ Collections Framework</p>
+            <p>✔ Java Streams & Lambda Expressions</p>
+            <p>✔ JDBC (Java Database Connectivity)</p>
+            <p>✔ Spring Boot & Frameworks</p>
+        </div>
+    </td>
+</tr>
+
+    <tr>
+    <td><span class="subject-link" onclick="toggleTopics('python-topics')">Python Programming</span></td>
+    <td>Prof.Revanth</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div id="python-topics" class="topics">
+            <p>✔ Introduction to Python & Installation</p>
+            <p>✔ Variables, Data Types, and Operators</p>
+            <p>✔ Control Flow: If-Else, Loops</p>
+            <p>✔ Functions & Modules</p>
+            <p>✔ File Handling</p>
+            <p>✔ Object-Oriented Programming (OOP) in Python</p>
+            <p>✔ Exception Handling</p>
+            <p>✔ Data Structures: Lists, Tuples, Sets, Dictionaries</p>
+            <p>✔ NumPy & Pandas for Data Science</p>
+            <p>✔ Matplotlib & Seaborn for Data Visualization</p>
+            <p>✔ Web Scraping with BeautifulSoup</p>
+            <p>✔ Introduction to Machine Learning with Scikit-Learn</p>
+        </div>
+    </td>
+</tr>
+<tr>
+    <td><span class="subject-link" onclick="toggleTopics('fullstack-topics')">Full Stack Development</span></td>
+    <td>Prof.Manoj</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div id="fullstack-topics" class="topics">
+            <p><strong>Frontend Development:</strong></p>
+            <p>✔ HTML, CSS, and JavaScript Basics</p>
+            <p>✔ Responsive Design & Flexbox/Grid</p>
+            <p>✔ Bootstrap & Tailwind CSS</p>
+            <p>✔ JavaScript ES6+ Features</p>
+            <p>✔ React.js & Component-Based Architecture</p>
+            <p>✔ State Management (Redux, Context API)</p>
+            <p>✔ API Calls with Axios & Fetch</p>
+
+            <p><strong>Backend Development:</strong></p>
+            <p>✔ Node.js & Express.js Basics</p>
+            <p>✔ RESTful APIs Development</p>
+            <p>✔ Authentication & Authorization (JWT, OAuth)</p>
+            <p>✔ Middleware & Error Handling</p>
+
+            <p><strong>Database:</strong></p>
+            <p>✔ SQL vs NoSQL Databases</p>
+            <p>✔ MySQL & PostgreSQL</p>
+            <p>✔ MongoDB & Mongoose</p>
+            <p>✔ CRUD Operations</p>
+
+            <p><strong>Deployment & DevOps:</strong></p>
+            <p>✔ Version Control with Git & GitHub</p>
+            <p>✔ Docker & Containerization</p>
+            <p>✔ CI/CD Pipelines</p>
+            <p>✔ Deployment on AWS, Heroku, Vercel</p>
+
+            <p><strong>Advanced Topics:</strong></p>
+            <p>✔ WebSockets & Real-Time Apps</p>
+            <p>✔ GraphQL Basics</p>
+            <p>✔ Microservices Architecture</p>
+            <p>✔ Performance Optimization & Security</p>
+        </div>
+    </td>
+</tr>
+    <tr>
+    <td><span class="subject-link" onclick="toggleTopics('c-topics')">C Programming</span></td>
+    <td>Prof. Hasini</td>
+</tr>
+<tr>
+    <td colspan="2">
+        <div id="c-topics" class="topics">
+            <p><strong>Basics of C:</strong></p>
+            <p>✔ Introduction to C & History</p>
+            <p>✔ Structure of a C Program</p>
+            <p>✔ Variables, Data Types, and Constants</p>
+            <p>✔ Operators & Expressions</p>
+
+            <p><strong>Control Structures:</strong></p>
+            <p>✔ Conditional Statements (if, if-else, switch)</p>
+            <p>✔ Loops (for, while, do-while)</p>
+            <p>✔ Break, Continue, and Goto Statements</p>
+
+            <p><strong>Functions & Pointers:</strong></p>
+            <p>✔ Function Basics & Prototypes</p>
+            <p>✔ Recursion</p>
+            <p>✔ Storage Classes</p>
+            <p>✔ Pointers & Memory Management</p>
+            <p>✔ Dynamic Memory Allocation (malloc, calloc, free)</p>
+
+            <p><strong>Arrays & Strings:</strong></p>
+            <p>✔ One-Dimensional & Multi-Dimensional Arrays</p>
+            <p>✔ String Handling Functions</p>
+
+            <p><strong>Structures & File Handling:</strong></p>
+            <p>✔ Structures & Unions</p>
+            <p>✔ File Operations (Read, Write, Append)</p>
+            <p>✔ Command-Line Arguments</p>
+
+            <p><strong>Advanced Topics:</strong></p>
+            <p>✔ Bitwise Operators</p>
+            <p>✔ Preprocessor Directives</p>
+            <p>✔ Linked Lists</p>
+            <p>✔ Stacks & Queues</p>
+        </div>
+    </td>
+</tr>
+
+</table>
+
+</div>
+    </div>
+        <div class="box">
+            <h2>Mind Mapping</h2>
+            <p>Visualize your learning journey, connect ideas, and plan effectively.</p>
+            <div class="link-box">
+                <a href="file:///C:/Users/HP/Desktop/Skincare/map.html">Go to Mind Mapping Page</a>
+            </div>
+    
+
+        <div class="footer">
+        <h3>Gudlavalleru Engineering College</h3>
+        <div>📍 Address: Seshadri Rao Gudlavalleru Engineering College</div>
+        <div>📞 Phone: 9392830249</div>
+        <div>🌐 Website: <a href="https://www.gecgudlavalleru.ac.in/" target="_blank">gecgudlavalleru.ac.in. </a></div>
+        <div>📧 Email: <a href="mailto:principalgec@gmail.com">principalgec@gmail.com</a></div>
+    </div>
+
+    <script>
+        function toggleTopics(id) {
+            const element = document.getElementById(id);
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.getElementById('notificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            const time = document.getElementById('time').value;
+
+            if (!subject || !message || !time) {
+                alert('Please fill all fields!');
+                return;
+            }
+
+            const notificationCard = document.createElement('div');
+            notificationCard.className = 'notification-card';
+            notificationCard.innerHTML = `<h3>${subject}</h3><p>${message}</p><div>⏰ ${time}</div>`;
+
+            document.getElementById('notificationsContainer').prepend(notificationCard);
+            document.getElementById('notificationForm').reset();
+        });
+    </script>
+
+<script>
+    document.getElementById('countdownForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('examName').value;
+        const date = document.getElementById('examDate').value;
+
+        if (!name || !date) {
+            alert('Please fill all fields!');
+            return;
+        }
+
+        const countdownItem = document.createElement('div');
+        countdownItem.className = 'countdown-item';
+        countdownItem.dataset.date = date;
+        countdownItem.dataset.name = name;
+
+        updateCountdown(countdownItem);
+
+        document.getElementById('countdownContainer').prepend(countdownItem);
+        document.getElementById('countdownForm').reset();
+    });
+
+    function updateCountdown(item) {
+        const eventDate = new Date(item.dataset.date).getTime();
+        const today = new Date().getTime();
+        const diff = Math.ceil((eventDate - today) / (1000 * 60 * 60 * 24));
+
+        if (diff <= 0) {
+            item.innerHTML = `<strong>${item.dataset.name}</strong> <span class="urgent">🚨 Time's Up! 🚨</span>`;
+            item.classList.add('flashing');
+
+            sendNotification(item.dataset.name);
+            playAlertSound();
+
+            setTimeout(() => item.remove(), 24 * 60 * 60 * 1000); // Remove after 1 day
+        } else {
+            item.innerHTML = `<strong>${item.dataset.name}</strong> <span class="${diff <= 3 ? 'urgent' : ''}">📆 ${diff} days left</span>`;
+        }
+    }
+
+    function sendNotification(name) {
+        if (Notification.permission === "granted") {
+            new Notification("⏰ Deadline Alert!", {
+                body: `${name} deadline is today!`,
+                icon: "https://cdn-icons-png.flaticon.com/512/3208/3208786.png"
+            });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    sendNotification(name);
+                }
+            });
+        }
+    }
+
+    function playAlertSound() {
+        const audio = new Audio("https://www.soundjay.com/button/beep-07.wav");
+        audio.play();
+    }
+
+    setInterval(() => {
+        document.querySelectorAll('.countdown-item').forEach(updateCountdown);
+    }, 60000); // Update countdown every minute
+</script>
+    <script>
+        const messages = {
+            flirty: [
+                "Are you studying, or just trying to impress me? 😉",
+                "This curriculum looks good, but you look better! 😍",
+                "Focus on your work... or on me? 🤭"
+            ],
+            sarcastic: [
+                "Oh wow, another deadline? How exciting. 🙃",
+                "Sure, you’ll totally finish this on time… totally. 😏",
+                "Studying is fun! Said no one ever. 🤡"
+            ],
+            motivational: [
+                "One chapter at a time, one step closer to success! 🚀",
+                "Your future self is cheering for you! 📚✨",
+                "Stay focused! You're doing amazing. 💪"
+            ],
+            chill: [
+                "Breathe in, breathe out... you'll be fine. 🧘",
+                "It's just a curriculum, not a life sentence. Relax! 😎",
+                "Go at your own pace, slow progress is still progress. 🌿"
+            ]
+        };
+
+        function updateAlert() {
+            const categories = Object.keys(messages);
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            const randomMessage = messages[randomCategory][Math.floor(Math.random() * messages[randomCategory].length)];
+            
+            const alertBox = document.getElementById("alertMessage");
+            alertBox.style.opacity = 0; // Fade out effect
+
+            setTimeout(() => {
+                alertBox.innerText = randomMessage;
+                alertBox.style.opacity = 1; // Fade in effect
+            }, 500); // Change text after fade out
+        }
+
+        // Change alert every 5 seconds
+        setInterval(updateAlert, 5000);
+
+        // Show first alert immediately on load
+        updateAlert();
+    </script>
+<script>
+        function navigateToPage(selectElement) {
+            var url = selectElement.value;
+            if (url) {
+                window.location.href = url;
+            }
+        }
+    </script>
+<
+
+    
+
+</body>
+</html>

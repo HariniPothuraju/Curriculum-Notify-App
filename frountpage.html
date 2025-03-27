@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Notify</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: url('https://www.shutterstock.com/shutterstock/photos/661771630/display_1500/stock-photo-curriculum-word-cloud-collage-education-concept-background-661771630.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            background: white;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            animation: fadeInOut 5s infinite;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            10% { opacity: 1; transform: translateY(0); }
+            90% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: black;
+            width: 300px;
+        }
+        .btn {
+            background: #8e44ad;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #732d91;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notify">Loading notifications...</div>
+    <div class="card">
+        <h2>Curriculum Notify</h2>
+        <p>Stay updated with the latest curriculum changes in style! 😉</p>
+        <a href="file:///C:/Users/HP/Desktop/notify/home.html" class="btn">Check Updates</a>
+    </div>
+
+    <script>
+        const messages = [
+            "Hey, smarty! 📚 A new curriculum update is here! Swipe right to check it out? 😉",
+            "Your syllabus just got hotter! 🔥 Don’t miss the update!",
+            "New curriculum update! Is it love at first sight? 😘",
+            "Your academics just sent you a text... It says 'Check me out now!' 📖😍",
+            "You + this update = a perfect match! 💖 Click to see what's new!"
+        ];
+        
+        function changeNotification() {
+            const notify = document.getElementById("notify");
+            notify.innerText = messages[Math.floor(Math.random() * messages.length)];
+        }
+        
+        setInterval(changeNotification, 5000);
+        changeNotification();
+    </script>
+</body>
+</html>

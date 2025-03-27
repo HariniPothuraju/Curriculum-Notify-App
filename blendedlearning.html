@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Programming | Code Academy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .video-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .watch-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        .watch-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .add-video-form {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Code Tube</h1>
+        <p>Master Programming with these free tutorials</p>
+    </header>
+
+    <div class="container">
+        <div class="add-video-form">
+            <h2>Add New Video</h2>
+	</div>
+
+        <div class="video-grid" id="videoContainer">
+            <!-- Videos will be added here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        // Programming tutorials database
+        let videos = [
+            // Python
+            {
+                title: "Python Tutorial for Beginners",
+                url: "https://www.youtube.com/watch?v=rfscVS0vtbw",
+                description: "Learn Python basics in 1 hour!"
+            },
+            {
+                title: "Python Functions Explained",
+                url: "https://www.youtube.com/watch?v=9Os0o3wzS_I",
+                description: "Understanding functions in Python"
+            },
+
+            // HTML
+            {
+                title: "HTML Crash Course for Beginners",
+                url: "https://www.youtube.com/watch?v=UB1O30fR-EE",
+                description: "Learn HTML5 in 1 hour!"
+            },
+            {
+                title: "HTML Full Course - Build a Website",
+                url: "https://www.youtube.com/watch?v=pQN-pnXPaVg",
+                description: "Complete HTML website tutorial"
+            },
+
+            // Java
+            {
+                title: "Java Programming for Beginners",
+                url: "https://www.youtube.com/watch?v=eIrMbAQSU34",
+                description: "Learn Java programming basics"
+            },
+            {
+                title: "Java OOP Concepts",
+                url: "https://www.youtube.com/watch?v=BI3JzvNyW3A",
+                description: "Object-Oriented Programming in Java"
+            },
+
+            // C
+            {
+                title: "C Programming Tutorial for Beginners",
+                url: "https://www.youtube.com/watch?v=KJgsSFOSQv0",
+                description: "Learn C programming language"
+            },
+            {
+                title: "C Pointers Explained",
+                url: "https://www.youtube.com/watch?v=zuegQmMdy8M",
+                description: "Understanding pointers in C"
+            }
+        ];
+
+        // Load videos on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderVideos();
+        });
+
+        // Form submission handler
+        document.getElementById('videoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('videoTitle').value;
+            const url = document.getElementById('videoUrl').value;
+            const description = document.getElementById('videoDescription').value;
+
+            if (title && url && isValidYoutubeUrl(url)) {
+                videos.push({ title, url, description });
+                renderVideos();
+                e.target.reset();
+            } else {
+                alert('Please enter valid YouTube URL and title');
+            }
+        });
+
+        // Render videos to the DOM
+        function renderVideos() {
+            const container = document.getElementById('videoContainer');
+            container.innerHTML = '';
+
+            videos.forEach(video => {
+                const videoId = getYouTubeId(video.url);
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                videoCard.innerHTML = `
+                    <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" class="video-thumbnail">
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <p class="video-description">${video.description}</p>
+                        <a href="${video.url}" target="_blank" class="watch-btn">Watch Now</a>
+                    </div>
+                `;
+                container.appendChild(videoCard);
+            });
+        }
+
+        // YouTube URL validation
+        function isValidYoutubeUrl(url) {
+            const pattern = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
+            return pattern.test(url);
+        }
+
+        // Extract YouTube video ID
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+    </script>
+</body>
+</html>

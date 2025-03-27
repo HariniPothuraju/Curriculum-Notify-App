@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Speed Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f0f0;
+	
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        #quote-display {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            min-height: 100px;
+        }
+
+        #quote-display span {
+            transition: color 0.3s;
+        }
+
+        #quote-display span.correct {
+            color: #4CAF50;
+        }
+
+        #quote-display span.incorrect {
+            color: #f44336;
+            text-decoration: underline;
+        }
+
+        #input-field {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-box {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            flex: 1;
+            margin: 0 0.5rem;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        min-height: 100vh;
+        /* Background image properties */
+        background-image: url('https://media.istockphoto.com/id/2206214881/photo/internet-speed-test-with-a-modern-laptop.jpg?s=2048x2048&w=is&k=20&c=S3_gpXeES_vZBfizzNEWb_Vyp7PHwyR5a-jZvPIeNZ4=');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        /* Add overlay for better readability */
+        position: relative;
+    }
+
+    /* Add overlay to make text more readable */
+    body::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: -1;
+    }
+
+    .container {
+        width: 80%;
+        max-width: 800px;
+        margin: 2rem auto;
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        position: relative; /* Ensure container stays above overlay */
+    }
+
+    /* Rest of the existing CSS remains the same */
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="stats">
+            <div class="stat-box">
+                <div>WPM</div>
+                <div id="wpm">0</div>
+            </div>
+            <div class="stat-box">
+                <div>Time Left</div>
+                <div id="timer">60</div>
+            </div>
+            <div class="stat-box">
+                <div>Accuracy</div>
+                <div id="accuracy">100%</div>
+            </div>
+        </div>
+        <div id="quote-display"></div>
+        <textarea id="input-field" placeholder="Start typing here..." rows="5"></textarea>
+        <button id="restart-btn">Restart</button>
+    </div>
+
+    <script>
+        const quoteDisplay = document.getElementById('quote-display');
+        const inputField = document.getElementById('input-field');
+        const wpmElement = document.getElementById('wpm');
+        const timerElement = document.getElementById('timer');
+        const accuracyElement = document.getElementById('accuracy');
+        const restartBtn = document.getElementById('restart-btn');
+
+        let currentQuote = [];
+        let startTime;
+        let timerInterval;
+        let correctCount = 0;
+        let totalTyped = 0;
+        let currentIndex = 0;
+        let timeLeft = 60;
+
+        async function fetchQuote() {
+            try {
+                const response = await fetch('https://api.quotable.io/random');
+                const data = await response.json();
+                return data.content;
+            } catch (error) {
+                return "The quick brown fox jumps over the lazy dog. This is a default quote used when the API is unavailable.";
+            }
+        }
+
+        function displayQuote(quote) {
+            quoteDisplay.innerHTML = quote.split('').map(char => 
+                `<span>${char === ' ' ? '&nbsp;' : char}</span>`
+            ).join('');
+            currentQuote = quote.split('');
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endTest();
+                }
+            }, 1000);
+        }
+
+        function updateStats() {
+            const timeElapsed = 60 - timeLeft;
+            const minutes = timeElapsed / 60;
+            const wpm = Math.round((correctCount / 5) / minutes) || 0;
+            const accuracy = totalTyped > 0 ? Math.round((correctCount / totalTyped) * 100) : 100;
+            
+            wpmElement.textContent = wpm;
+            accuracyElement.textContent = `${accuracy}%`;
+        }
+
+        function endTest() {
+            clearInterval(timerInterval);
+            inputField.disabled = true;
+            updateStats();
+        }
+
+        function handleInput() {
+            if (!startTime) {
+                startTime = Date.now();
+                startTimer();
+            }
+
+            const inputChars = inputField.value.split('');
+            totalTyped = inputChars.length;
+
+            currentIndex = Math.min(inputChars.length, currentQuote.length);
+            
+            quoteDisplay.querySelectorAll('span').forEach((span, index) => {
+                if (index >= inputChars.length) {
+                    span.className = '';
+                } else if (inputChars[index] === currentQuote[index]) {
+                    span.className = 'correct';
+                } else {
+                    span.className = 'incorrect';
+                }
+            });
+
+            correctCount = inputChars.filter((char, index) => char === currentQuote[index]).length;
+            
+            if (currentIndex >= currentQuote.length) {
+                endTest();
+            }
+
+            updateStats();
+        }
+
+        async function restartTest() {
+            clearInterval(timerInterval);
+            inputField.value = '';
+            inputField.disabled = false;
+            timeLeft = 60;
+            startTime = null;
+            correctCount = 0;
+            totalTyped = 0;
+            currentIndex = 0;
+            
+            timerElement.textContent = timeLeft;
+            wpmElement.textContent = '0';
+            accuracyElement.textContent = '100%';
+            
+            const quote = await fetchQuote();
+            displayQuote(quote);
+        }
+
+        inputField.addEventListener('input', handleInput);
+        restartBtn.addEventListener('click', restartTest);
+
+        // Initialize
+        restartTest();
+    </script>
+</body>
+</html>

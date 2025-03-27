@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Roadmap Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://img.freepik.com/free-photo/business-strategy-success-target-goal-concept_53876-132140.jpg') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .roadmap {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📌 Course Roadmap Generator</h1>
+        <p>Plan your course completion effectively within your desired timeframe.</p>
+        
+        <label for="course">Select Course:</label>
+        <select id="course">
+            <option value="C">C Programming</option>
+            <option value="Python">Python</option>
+            <option value="Java">Java</option>
+            <option value="FullStack">Full Stack Development</option>
+            <option value="Optimization">Optimization Techniques</option>
+        </select>
+        
+        <label for="days">Number of Days (Max: 180):</label>
+        <input type="number" id="days" placeholder="Enter number of days" min="1" max="180">
+        
+        <button onclick="generateRoadmap()">Generate Roadmap</button>
+        
+        <div class="roadmap" id="roadmap"></div>
+    </div>
+    
+    <script>
+        function generateRoadmap() {
+            const course = document.getElementById('course').value;
+            let days = parseInt(document.getElementById('days').value);
+            const roadmapDiv = document.getElementById('roadmap');
+            
+            if (!days || days <= 0 || days > 180) {
+                alert("Please enter a valid number of days (1-180). ");
+                return;
+            }
+            
+            const topics = {
+                "C": ["Introduction & Basics", "Loops & Conditions", "Functions & Recursion", "Pointers", "Structures", "File Handling"],
+                "Python": ["Syntax & Variables", "Control Flow", "Functions", "OOPs Concepts", "Modules & Libraries", "Data Science Basics"],
+                "Java": ["Syntax & Data Types", "OOPs Concepts", "Collections Framework", "Exception Handling", "Multithreading", "Spring Boot"],
+                "FullStack": ["HTML & CSS", "JavaScript & DOM", "Backend Development", "Databases", "REST API Integration", "Deployment"],
+                "Optimization": ["Linear Programming", "Graph Theory", "Dynamic Programming", "Convex Optimization", "Heuristics", "Game Theory"]
+            };
+            
+            const selectedTopics = topics[course];
+            const topicsPerDay = Math.max(1, Math.ceil(selectedTopics.length / days));
+            let roadmapHTML = `<h2>📅 Roadmap for ${course} in ${days} Days</h2>`;
+            roadmapHTML += "<ul>";
+            
+            for (let i = 0; i < days; i++) {
+                let start = i * topicsPerDay;
+                let end = Math.min(start + topicsPerDay, selectedTopics.length);
+                let topicsList = selectedTopics.slice(start, end).join(', ');
+                let revisionOrPractice = (i % 7 === 6) ? "Live Revision & Practice" : topicsList;
+                roadmapHTML += `<li><strong>Day ${i + 1}:</strong> ${revisionOrPractice || "Revision & Practice"}</li>`;
+            }
+            
+            roadmapHTML += "</ul>";
+            roadmapDiv.innerHTML = roadmapHTML;
+        }
+    </script>
+</body>
+</html>

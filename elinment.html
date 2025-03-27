@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Circular Element</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            box-shadow: 8px 8px 16px #0d0d0d,
+                       -8px -8px 16px #272727;
+        }
+
+        .circular-progress:hover {
+            transform: scale(1.05);
+        }
+
+        .circular-progress::before {
+            content: '';
+            position: absolute;
+            width: 84%;
+            height: 84%;
+            border-radius: 50%;
+            background: #1a1a1a;
+            z-index: 1;
+        }
+
+        .progress-value {
+            position: relative;
+            z-index: 2;
+            color: #fff;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        .circular-progress svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .circular-progress svg circle {
+            fill: transparent;
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 628;
+            stroke-dashoffset: 628;
+            animation: progress 2s ease-in-out forwards;
+        }
+
+        @keyframes progress {
+            to {
+                stroke-dashoffset: 94.2; /* 85% of 628 */
+            }
+        }
+
+        .circular-progress svg circle {
+            stroke: url(#gradient);
+        }
+
+        .stats {
+            position: absolute;
+            bottom: -40px;
+            color: #fff;
+            font-size: 1.2em;
+            opacity: 0.8;
+        }
+
+        /* Gradient definition */
+        svg defs stop:first-child {
+            stop-color: #00ff88;
+        }
+
+        svg defs stop:last-child {
+            stop-color: #00a3ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="circular-progress">
+        <svg>
+            <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"/>
+                    <stop offset="100%"/>
+                </linearGradient>
+            </defs>
+            <circle cx="125" cy="125" r="115"/>
+        </svg>
+        <div class="progress-value">0%</div>
+        <div class="stats">Monthly Growth</div>
+    </div>
+
+    <script>
+        // Animated percentage counter
+        const progressValue = document.querySelector('.progress-value');
+        let current = 0;
+        const target = 85;
+
+        const animatePercentage = () => {
+            if (current < target) {
+                current++;
+                progressValue.textContent = current + "%";
+                requestAnimationFrame(animatePercentage);
+            }
+        }
+
+        // Start animation after slight delay
+        setTimeout(animatePercentage, 500);
+
+        // Interactive mouse movement effect
+        const progressCircle = document.querySelector('.circular-progress');
+
+        progressCircle.addEventListener('mousemove', (e) => {
+            const rect = progressCircle.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width/2;
+            const y = e.clientY - rect.top - rect.height/2;
+            
+            progressCircle.style.transform = `
+                scale(1.05)
+                rotateX(${y/15}deg)
+                rotateY(${x/15}deg)
+            `;
+        });
+
+        progressCircle.addEventListener('mouseleave', () => {
+            progressCircle.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

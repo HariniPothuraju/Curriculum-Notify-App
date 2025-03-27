@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Notify Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://img.freepik.com/free-photo/still-life-books-versus-technology_23-2150063081.jpg?t=st=1742727905~exp=1742731505~hmac=03d8e376b5b6360b03ac712cede23836dac7b5c17d09e374ef64ab08cc529e29&w=1380') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .notification {
+            background: #ff9800;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            background: #2196F3;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Curriculum Notify Tool</h2>
+        <p>Get reminders and track your curriculum!</p>
+        <button onclick="goToReminderPage()">Set Reminder</button>
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script>
+        function goToReminderPage() {
+            window.location.href = "file:///C:/Users/HP/Desktop/notify/aiplanner.html";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Circular 2024</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .circular-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .circular-header h1 {
+            font-size: 3.5rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .academic-emblem {
+            width: 100px;
+            height: 100px;
+            margin: 1rem auto;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>');
+            animation: rotate 20s linear infinite;
+        }
+
+        .circular-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .announcement-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            color: #333;
+            transform: rotate(1deg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .announcement-card:hover {
+            transform: rotate(0deg) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: #fff;
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 1.5rem;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .print-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .print-button:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        @media print {
+            body { background: white; color: black; }
+            .circular-header h1 { background: black; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="circular-header">
+            <div class="academic-emblem"></div>
+            <h1>Academic Circular 2025</h1>
+        </div>
+
+        <div class="circular-content">
+            <div class="announcement-card">
+                <h2><i class="fas fa-bullhorn"></i> Important Dates</h2>
+                <ul>
+                    <li>Registration Deadline: March 15</li>
+                    <li>Examination Start: April 1</li>
+                    <li>Result Publication: June 30</li>
+                </ul>
+            </div>
+
+            <div class="announcement-card">
+                <h2><i class="fas fa-book-open"></i> New Courses</h2>
+                <p>Introduction to AI & Machine Learning</p>
+                <p>Advanced Data Science</p>
+                <p>Quantum Computing Basics</p>
+            </div>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item" style="left: 0">
+                <h3>Admission Begins</h3>
+                <p>January 15 - February 28</p>
+            </div>
+            <div class="timeline-item" style="left: 50%">
+                <h3>Orientation Program</h3>
+                <p>March 10 - March 15</p>
+            </div>
+        </div>
+
+        <button class="print-button" onclick="printCircular()">
+            <i class="fas fa-print"></i> Print Circular
+        </button>
+    </div>
+
+    <script>
+        // Add scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.timeline-item').forEach((el) => {
+            observer.observe(el);
+        });
+
+        function printCircular() {
+            window.print();
+            // Add confetti effect
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'];
+            for(let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.borderRadius = '50%';
+                confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+        // Add falling animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://img.freepik.com/free-vector/emoji-framed-background_53876-89764.jpg?t=st=1742972652~exp=1742976252~hmac=f4b6e2bcd080eb20535cc260ea611ff0e08af7d8e07c0294d2ae452e48ad7835&w=1380') no-repeat center center/cover;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* Adds transparency to improve readability */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .stars {
+            display: flex;
+            justify-content: center;
+        }
+        .star {
+            font-size: 30px;
+            cursor: pointer;
+            color: gray;
+            transition: color 0.3s;
+        }
+        .star:hover,
+        .star.active {
+            color: gold;
+        }
+        textarea {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            background: blue;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Rate Us</h2>
+        <div class="stars">
+            <span class="star" data-value="1">&#9733;</span>
+            <span class="star" data-value="2">&#9733;</span>
+            <span class="star" data-value="3">&#9733;</span>
+            <span class="star" data-value="4">&#9733;</span>
+            <span class="star" data-value="5">&#9733;</span>
+        </div>
+        <textarea id="feedback" rows="4" placeholder="Leave your feedback here..."></textarea>
+        <button onclick="submitFeedback()">Submit</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        let stars = document.querySelectorAll('.star');
+        let rating = 0;
+        
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                rating = this.getAttribute('data-value');
+                stars.forEach(s => s.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        function submitFeedback() {
+            let feedbackText = document.getElementById('feedback').value;
+            if (rating === 0) {
+                alert("Please select a rating.");
+                return;
+            }
+            document.getElementById('result').innerText = `Thank you for your ${rating}-star rating!\nFeedback: ${feedbackText}`;
+        }
+    </script>
+</body>
+</html>
